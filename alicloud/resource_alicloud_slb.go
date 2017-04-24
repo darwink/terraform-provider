@@ -202,6 +202,10 @@ func resourceAliyunSlb() *schema.Resource {
 						//	Type:     schema.TypeString,
 						//	Optional: true,
 						//},
+						"vserver_group_id": &schema.Schema{
+							Type:     schema.TypeString,
+							Optional: true,
+						},
 					},
 				},
 				Set: resourceAliyunSlbListenerHash,
@@ -528,6 +532,7 @@ func getTcpListenerArgs(loadBalancerId string, listener *Listener) slb.CreateLoa
 		HealthCheckConnectTimeout: listener.HealthCheckTimeout,
 		HealthCheckInterval:       listener.HealthCheckInterval,
 		HealthCheckHttpCode:       listener.HealthCheckHttpCode,
+		VServerGroupId:            listener.VServerGroupId,
 	}
 	return args
 }
@@ -541,6 +546,7 @@ func getUdpListenerArgs(loadBalancerId string, listener *Listener) slb.CreateLoa
 		PersistenceTimeout:        listener.PersistenceTimeout,
 		HealthCheckConnectTimeout: listener.HealthCheckTimeout,
 		HealthCheckInterval:       listener.HealthCheckInterval,
+		VServerGroupId:            listener.VServerGroupId,
 	}
 	return args
 }
@@ -595,6 +601,7 @@ func getHttpListenerType(loadBalancerId string, listener *Listener) (listenType 
 		HealthCheckTimeout:     listener.HealthCheckTimeout,
 		HealthCheckInterval:    listener.HealthCheckInterval,
 		HealthCheckHttpCode:    listener.HealthCheckHttpCode,
+		VServerGroupId:         listener.VServerGroupId,
 	}
 
 	return httpListenertType, err

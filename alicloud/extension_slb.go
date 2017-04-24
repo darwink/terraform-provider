@@ -131,6 +131,10 @@ func expandListeners(configured []interface{}) ([]*Listener, error) {
 			l.HealthCheckHttpCode = slb.HealthCheckHttpCodeType(v.(string))
 		}
 
+		if v, ok := data["vserver_group_id"]; ok {
+			l.VServerGroupId = v.(string)
+		}
+
 		var valid bool
 		if l.SSLCertificateId != "" {
 			// validate the protocol is correct
@@ -159,6 +163,20 @@ func expandBackendServers(list []interface{}) []slb.BackendServerType {
 		if i.(string) != "" {
 			result = append(result, slb.BackendServerType{ServerId: i.(string), Weight: 100})
 		}
+	}
+	return result
+}
+
+func expandVBackendServers(list []interface{}) []*slb.VBackendServerType {
+	result := make([]*slb.VBackendServerType, 0, len(list))
+	for _, i := range list {
+		data := i.(map[string]interface{})
+		vBackendServer := &slb.VBackendServerType{
+			ServerId: data["server_id"].(string),
+			Weight:   data["weight"].(int),
+			Port: data["port"].(int),
+		}
+		result = append(result, vBackendServer)
 	}
 	return result
 }
