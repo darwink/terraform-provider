@@ -438,6 +438,9 @@ func resourceAliyunSlbListenerHash(v interface{}) int {
 	if v, ok := m["ssl_certificate_id"]; ok {
 		buf.WriteString(fmt.Sprintf("%s-", v.(string)))
 	}
+	if v, ok := m["vserver_group_id"]; ok {
+		buf.WriteString(fmt.Sprintf("%s-", v.(string)))
+	}
 
 	return hashcode.String(buf.String())
 }
